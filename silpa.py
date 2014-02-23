@@ -1,12 +1,24 @@
 from flask import Flask
+from flask.ext import  restful
 from logging import handlers, Formatter
 from webbridge import WebBridge
 from core.modulehelper import enabled_modules, BASEURL, modules
+from core.resthandler import RestHandler   #rest handler
 from jinja2 import PackageLoader, ChoiceLoader
 import loadconfig
 import logging
 import os
 
+
+def register_rest_api():
+    ''' Registers the REST apis for the enabled modules 
+        Currently simple test apis are done just to test
+        stuff is working fine. General API format is 
+        /rest/v1/modulename , where v1 is the version of api
+    '''
+    for module in enabled_modules:
+        print module
+        api.add_resource(RestHandler,'/rest/v1/'+module+'/<string:functionality>')
 
 def register_url():
     '''
@@ -98,12 +110,15 @@ DEBUG = False
 # Basics
 app = Flask(__name__)
 app.config.from_object(__name__)
-
+api = restful.Api(app)
 # Logging
 configure_logging()
 
 # Register URL's
 register_url()
+
+#Register REST apis
+register_rest_api()
 
 # adds templates from imported modules
 add_templates()
