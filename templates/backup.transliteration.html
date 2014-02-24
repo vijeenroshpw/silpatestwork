@@ -9,22 +9,18 @@ $(document).ready(function() {
             id_progress = $('#progress'),
             text = $("textarea[name=input_text]", 'form').val(),
             targetlang = $("select[name=lang]", 'form').val(),
-            /*jsonRequest = {
+            jsonRequest = {
                 "method" : "transliteration.transliterate",
                 "params" : [text, targetlang],
                 "id" : ""
-                },*/
-            result,
-            method = "transliteration.transliterate",
-            params = text + "|" + targetlang,
-            id="";
+                },
+            result;
 
-                     
         $.ajax({
-            type: "GET",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
-            url: "/api/v1/" + method + "/" + params +"/",
-            /*data: JSON.stringify(jsonRequest),*/
+            url: "JSONRPC",
+            data: JSON.stringify(jsonRequest),
             dataType: "json",
             beforeSend:function(){
                 id_result.hide();
@@ -32,11 +28,8 @@ $(document).ready(function() {
                 id_progress.html("Transliterating. Please Wait...").show();
             },
             success: function(msg) {
-                console.log(msg);    //degugging
                 id_progress.hide();
-                result = "blah";
                 result = (msg.result ? msg.result.replace("\n", "&#13;") : msg.message);
-                console.log(result + "result");    // Debugging
                 id_result.html(result).show();
             },
             error: function(msg) {
