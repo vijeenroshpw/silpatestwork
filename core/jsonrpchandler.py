@@ -99,4 +99,5 @@ class JSONRPCHandler(object):
                 result = self.call(getattr(module_instance, \
                         meth.split('.')[-1]), args)
 
+                
             return self.translate_result(result, err, id_)
