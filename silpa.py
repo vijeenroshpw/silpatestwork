@@ -104,7 +104,7 @@ app.config.from_object(__name__)
 api = restful.Api(app)
 
 # Configures the RESTapi
-api.add_resource(RestHandler,'/api/v1/<string:method>/<string:params>/')
+api.add_resource(RestHandler,'/api/v1/<string:module>/<string:method>/')
 # Logging
 configure_logging()
 

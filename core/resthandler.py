@@ -1,8 +1,16 @@
 from modulehelper import modules, modulenames, MODULES, enabled_modules, \
         load_modules
 from json import loads, dumps
+from flask import request
 from flask.ext import restful
+from flask.ext.restful import reqparse
 
+
+
+parser = reqparse.RequestParser()
+parser.add_argument('text',type=str)
+parser.add_argument('targetlang',type=str)
+parser.add_argument('font',type=str)
 
 class RestHandler(restful.Resource):
     def __init__(self):
@@ -40,17 +48,30 @@ class RestHandler(restful.Resource):
         else:
             return method(*_args)
 
-    def get(self,method,params):
-        module_instance = MODULES.get(method.split('.')[0])
-        args = params.split('|')    
-        result = self.call(getattr(module_instance,method.split('.')[-1]),args) 
+    def get(self,module,method):
+        args = parser.parse_args()
+        arglist=[]
+        for arg in args.values():
+            if arg!= None:
+              arglist.append(arg)
+
+        print arglist[0:2]
+        module_instance = MODULES.get(module) # retrieve module instance
+        result = self.call(getattr(module_instance,method),arglist[0:2]) # we only require first two arguments
+        return self.translate_result(result,None,"1")
+ 
+ 
+    def post(self,module,method):
+        print request.data
+        args = json.loads(request.data) 
+        arglist = args.values()
+        print arglist
+        module_instance = MODULES.get(module)
+        result = self.call(getattr(module_instance,method),arglist)
         return self.translate_result(result,None,"1")
  
 
-
-
-
-
+ 
 
  
 

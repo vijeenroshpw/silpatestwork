@@ -23,7 +23,7 @@ $(document).ready(function() {
         $.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: "/api/v1/" + method + "/" + params +"/",
+            url: "/api/v1/transliteration/transliterate/?text="+text+"&targetlang="+targetlang,
             /*data: JSON.stringify(jsonRequest),*/
             dataType: "json",
             beforeSend:function(){
